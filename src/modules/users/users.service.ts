@@ -5,11 +5,13 @@ import { IUser } from './interfaces/user.interface';
 export class UsersService {
   private readonly users: IUser[] = [];
 
-  public create(user: IUser) {
+  public create(user: IUser): IUser {
     this.users.push(user);
+
+    return user;
   }
 
- public findAll(): IUser[] {
-    return this.users;
+ public findOne(age: number): IUser {
+    return this.users.find((item) => item.age === age);
   }
 }
