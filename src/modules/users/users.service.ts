@@ -1,17 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { IUser } from './interfaces/user.interface';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
+  private idSequence = 0;
   private readonly users: IUser[] = [];
 
-  public create(user: IUser): IUser {
-    this.users.push(user);
+  public create(user: CreateUserDto): IUser {
+    const newUser = {
+      ...user,
+      id: (this.idSequence += 1),
+    };
 
-    return user;
+    this.users.push(newUser);
+
+    return newUser;
   }
 
- public findOne(age: number): IUser {
-    return this.users.find((item) => item.age === age);
+  public findOneById(id: number): IUser {
+    return this.users.find((item) => item.id === id);
   }
 }
