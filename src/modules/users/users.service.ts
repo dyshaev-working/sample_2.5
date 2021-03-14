@@ -21,4 +21,8 @@ export class UsersService {
   public findOneById(id: number): IUser {
     return this.users.find((item) => item.id === id);
   }
+
+  public getAll(): IUser[] {
+    return this.users;
+  }
 }
