@@ -9,11 +9,12 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import * as jwt from 'jsonwebtoken';
+import * as config from 'config';
+
+const JWT_SECRET: string = config.get('jwt.jwt_secret');
 
 @Injectable()
 export class AccessGuard implements CanActivate {
-  private readonly JWT_SECRET = '1_L0VE_L1TTLE_P0NY';
-
   constructor(private readonly reflector: Reflector) {}
   public canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     try {
@@ -21,9 +22,9 @@ export class AccessGuard implements CanActivate {
       const request = context.switchToHttp().getRequest();
       const authorization = request.headers.authorization;
       const token = authorization && authorization.replace(/Bearer /, '');
-      const payload: any = jwt.verify(token, this.JWT_SECRET);
+      const payload: any = jwt.verify(token, JWT_SECRET);
 
-      if (currentRouteRole && !payload.roles.includes(currentRouteRole)) {
+      if (currentRouteRole && !payload.roles.includes(...currentRouteRole)) {
         throw new ForbiddenException();
       }
 

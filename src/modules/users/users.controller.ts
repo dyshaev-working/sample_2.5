@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { IUser } from './interfaces/user.interface';
 import {AccessGuard} from "../../common/guards/roles.guard";
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('users')
 export class UsersController {
@@ -14,6 +15,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('local'))
   public findOneById(@Param('id') id: number): IUser {
     return this.usersService.findOneById(id);
   }
