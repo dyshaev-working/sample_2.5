@@ -18,10 +18,12 @@ export class SigninService {
   }
 
   public getUserByName(name: string) {
+    const user = { id: 1, roles: ['admin'], password: 'password' }; // get user by name
+
     return {
       id: 1,
-      password: 'password',
-      token: jwt.sign({ id: 1, roles: ['admin'] }, JWT_SECRET),
+      password: user.password,
+      token: jwt.sign({ id: user.id, roles: user.roles }, JWT_SECRET),
     };
   }
 }
